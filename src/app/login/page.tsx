@@ -2,8 +2,12 @@
 
 import { SyntheticEvent } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { data, status } = useSession();
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -17,30 +21,44 @@ export default function LoginPage() {
     const res = await signIn('credentials', {
       email: email.value,
       password: password.value,
-      redirect: true
+      redirect: false
     });
+
+    if (res?.error) {
+      console.error(res.error);
+    } else {
+      console.log('jestem');
+      router.replace('/homepage');
+    }
 
     console.log(res);
   };
   return (
     <main>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='email'>E-mail</label>
-        <input type='email' name='email' />
+      {status === 'loading' && <p>loading</p>}
+      {status === 'unauthenticated' && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='email'>E-mail</label>
+          <input type='email' name='email' />
 
-        <label htmlFor='password'>Haslo:</label>
-        <input type='password' name='password' />
+          <label htmlFor='password'>Haslo:</label>
+          <input type='password' name='password' />
 
-        <button type='submit'>Zaloguj</button>
-      </form>
-
-      <button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        wyloguj sie
-      </button>
+          <button type='submit'>Zaloguj</button>
+        </form>
+      )}
+      {status === 'authenticated' && (
+        <p>jestes zalogowany to tu niczego nie znajdziesz</p>
+      )}
+      {status === 'authenticated' && (
+        <button
+          onClick={() => {
+            signOut({ callbackUrl: 'http://localhost:3000/' });
+          }}
+        >
+          wyloguj sie
+        </button>
+      )}
     </main>
   );
 }

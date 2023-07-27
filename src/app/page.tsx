@@ -1,17 +1,12 @@
-import Image from 'next/image';
-import styles from './page.module.css';
-import { SyntheticEvent } from 'react';
-import Link from 'next/link';
+'use client';
+
+import HomePageTemplate from '@/components/HomePageTemplate/HomePageTemplate';
+import { SessionProvider } from 'next-auth/react';
 
 export default function HomePage() {
   return (
-    <main>
-      <Link href='/login'>
-        <button>zaloguj sie</button>
-      </Link>
-      <Link href='/register'>
-        <button>zarejestruj sie</button>
-      </Link>
-    </main>
+    <SessionProvider>
+      <HomePageTemplate />
+    </SessionProvider>
   );
 }

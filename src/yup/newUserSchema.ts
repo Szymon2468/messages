@@ -11,7 +11,7 @@ export const newUserSchema: y.Schema<Partial<Prisma.User>> = y.object().shape({
     .required('You need to type your email.')
     .email('Your typed email is not valid, check your email.'),
 
-  password: y
+  passwordHash: y
     .string()
     .required('You need to type your password.')
     .min(10, 'Your password should be at least 10 characters of length.')

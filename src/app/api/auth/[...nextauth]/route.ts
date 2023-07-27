@@ -4,9 +4,18 @@ import credentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '../../../../utils/prismaClient';
 import * as bcrypt from 'bcrypt';
 
+declare module 'next-auth' {
+  interface User {
+    id: number;
+  }
+}
+
 const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt'
+  },
+  pages: {
+    signIn: '/login'
   },
   secret: process.env.SECRET,
   providers: [
