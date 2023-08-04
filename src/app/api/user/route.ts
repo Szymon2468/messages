@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../utils/prismaClient';
+import { prisma } from '../utils/prismaClient';
 import * as bcrypt from 'bcrypt';
 import { newUserSchema } from '@/yup/newUserSchema';
 import { Prisma } from '@prisma/client';

@@ -1,5 +1,5 @@
 import { decode } from 'next-auth/jwt';
-import { prisma } from '../../../../utils/prismaClient';
+import { prisma } from '../../utils/prismaClient';
 import { NextRequest, NextResponse } from 'next/server';
 import * as bcrypt from 'bcrypt';
 
