@@ -1,9 +1,7 @@
 import { NextRequest } from 'next/server';
 
 const mail = require('@sendgrid/mail');
-mail.setApiKey(
-  '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'
-);
+mail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendMail = async (email: string, link: string) => {
   const message = {
