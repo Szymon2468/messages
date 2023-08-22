@@ -2,23 +2,29 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../utils/prismaClient';
 import * as bcrypt from 'bcrypt';
 
-export async function PUT(
+export async function POST(
   req: NextRequest,
   { params }: { params: { token: string } }
 ) {
   const token = params.token;
-  const { newPasswordHash } = await req.json();
+  const { newPassword } = await req.json();
 
   try {
     const verificationToken: any = await prisma.verificationToken.findFirst({
-      where: { token: token },
+      where: { token },
       select: { userId: true }
     });
 
-    await prisma.user.update({
-      where: { id: verificationToken?.userId },
-      data: { passwordHash: await bcrypt.hash(newPasswordHash, 10) }
-    });
+    if (newPassword != undefined) {
+      const passwordHash = await bcrypt.hash(newPassword, 10);
+      await prisma.user.update({
+        where: { id: verificationToken?.userId },
+        data: { passwordHash }
+      });
+      console.log('haslo zmienione na', newPassword);
+    } else {
+      console.log('no cos nie dziala');
+    }
 
     await prisma.verificationToken.deleteMany({
       where: { expiresAt: { lt: new Date() } }

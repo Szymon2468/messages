@@ -2,11 +2,14 @@
 
 import Image from 'next/image';
 import styles from './page.module.css';
-import { SyntheticEvent } from 'react';
+import { Fragment, SyntheticEvent } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { getAllUsers } from '@/fetches/getAllUsers';
+import getUUID from '@/utils/getUUID';
+import { sendInvitation } from '@/fetches/sendInvitation';
 
-const HomePageTemplate = () => {
+const HomePageTemplate = ({ users }: any) => {
   const { status } = useSession();
 
   return (
@@ -23,7 +26,23 @@ const HomePageTemplate = () => {
         </>
       )}
       {status === 'authenticated' && (
-        <p>jestes zalogowany to tu niczego nie znajdziesz</p>
+        <>
+          <h2>Lista uzytkownikow</h2>
+          <ul>
+            {users.map((user: any) => (
+              <Fragment key={getUUID()}>
+                <p>{user.name}</p>
+                <button
+                  onClick={async () => {
+                    await sendInvitation(user.id);
+                  }}
+                >
+                  Wyslij zaproszenie
+                </button>
+              </Fragment>
+            ))}
+          </ul>
+        </>
       )}
     </main>
   );

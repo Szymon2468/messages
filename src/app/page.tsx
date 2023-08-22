@@ -1,12 +1,15 @@
 'use client';
 
 import HomePageTemplate from '@/components/HomePageTemplate/HomePageTemplate';
+import { getAllUsers } from '@/fetches/getAllUsers';
 import { SessionProvider } from 'next-auth/react';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const users = await getAllUsers();
+
   return (
     <SessionProvider>
-      <HomePageTemplate />
+      <HomePageTemplate users={users} />
     </SessionProvider>
   );
 }

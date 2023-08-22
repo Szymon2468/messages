@@ -18,8 +18,7 @@ const PageLayout = ({ token }: { token: string }) => {
       if (firstNewPassword.value != secondNewPassword.value) {
         toast.error('Podane hasła muszą być takie same');
       } else {
-        const data: any = { newPasswordHash: firstNewPassword.value };
-        await resetPassword(data);
+        await resetPassword(token, firstNewPassword.value);
       }
     } catch (err: any) {
       console.error(err);

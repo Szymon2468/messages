@@ -1,16 +1,10 @@
 'use client';
 
 import { generateVerificationToken } from '@/fetches/generateVerificationToken';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { SyntheticEvent } from 'react';
-import { checkIfTokenExists } from '../api/utils/checkIfTokenExists';
-import { sendMail } from '@/app/api/utils/sendMail';
+import UnauthenticatedPage from '@/components/UnauthenticatedPage/UnauthenticatedPage';
 
 const ResetPasswordPage = () => {
-  const router = useRouter();
-  const { status } = useSession();
-
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -28,20 +22,14 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <>
-      {status === 'loading' && <p>loading</p>}
-      {status === 'unauthenticated' && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='email'>email:</label>
-          <input type='email' name='email' />
+    <UnauthenticatedPage>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='email'>email:</label>
+        <input type='email' name='email' />
 
-          <button type='submit'>dalej</button>
-        </form>
-      )}
-      {status === 'authenticated' && (
-        <p>jestes zalogowany to tu niczego nie znajdziesz</p>
-      )}
-    </>
+        <button type='submit'>dalej</button>
+      </form>
+    </UnauthenticatedPage>
   );
 };
 

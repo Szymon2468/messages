@@ -1,13 +1,11 @@
-'use client';
-
+import AuthenticatedPage from '@/components/AuthenticatedPage/AuthenticatedPage';
 import { changePassword } from '@/fetches/changePassword';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent } from 'react';
 
 const ChangePasswordPage = () => {
   const router = useRouter();
-  const { status } = useSession();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -35,34 +33,30 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <>
-      {status === 'authenticated' && (
-        <main>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor='oldPassword'>stare haslo:</label>
-            <input type='password' name='oldPassword' />
+    <AuthenticatedPage>
+      <main>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='oldPassword'>stare haslo:</label>
+          <input type='password' name='oldPassword' />
 
-            <label htmlFor='password'>haslo:</label>
-            <input type='password' name='password' />
+          <label htmlFor='password'>haslo:</label>
+          <input type='password' name='password' />
 
-            <label htmlFor='repeatedPassword'>powtorz haslo:</label>
-            <input type='password' name='repeatedPassword' />
+          <label htmlFor='repeatedPassword'>powtorz haslo:</label>
+          <input type='password' name='repeatedPassword' />
 
-            <button type='submit'>zmien haslo</button>
-          </form>
-        </main>
-      )}
-      {status === 'unauthenticated' && <p>trzeba byc zalogowanym</p>}
-      {status === 'authenticated' && (
-        <button
-          onClick={() => {
-            signOut({ callbackUrl: 'http://localhost:3000/' });
-          }}
-        >
-          wyloguj sie
-        </button>
-      )}
-    </>
+          <button type='submit'>zmien haslo</button>
+        </form>
+      </main>
+
+      <button
+        onClick={() => {
+          signOut({ callbackUrl: 'http://localhost:3000/' });
+        }}
+      >
+        wyloguj sie
+      </button>
+    </AuthenticatedPage>
   );
 };
 

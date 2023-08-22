@@ -17,6 +17,8 @@ model User {
   receivedMessages Message[] @relation("receiver") 
   verificationToken VerificationToken[]
   userSession userSession[]
+  receivedInvitations Invitation[] @relation("from")
+  sentInvitations Invitation[] @relation("to")
 }
 
 model Message {
@@ -27,6 +29,15 @@ model Message {
   userTo User @relation("receiver", fields: [userToId], references: [id])
   content String
   isRead Boolean @default(false)
+  createdDate DateTime @default(now())
+}
+
+model Invitation {
+  id Int @id @default(autoincrement())
+  userFromId Int
+  userFrom User @relation("from", fields: [userFromId], references: [id])
+  userToId Int
+  userTo User @relation("to", fields: [userToId], references: [id])
   createdDate DateTime @default(now())
 }
 
@@ -41,7 +52,7 @@ model userSession {
 
 model VerificationToken {
   id Int @id @default(autoincrement())
-  token String  @unique
+  token String @unique
   userId Int
   expiresAt DateTime
 

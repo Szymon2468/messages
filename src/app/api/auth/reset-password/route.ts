@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    const link: string = `http://localhost:3000/reset-password/${token}`;
+    const link: string = `http://localhost:3001/reset-password/${token}`;
     await sendMail(email, link);
 
     return NextResponse.json(link, { status: 200 });

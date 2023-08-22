@@ -8,8 +8,9 @@ const ResetPasswordWithTokenPage = async ({
 }) => {
   if (!(await checkIfTokenExists(params.token))) {
     return <p>Lol Ci w zęby</p>;
+  } else {
+    console.log('nie ma tokena haha');
   }
-
   return <PageLayout token={params.token} />;
 };
 
