@@ -10,8 +10,6 @@ export const addNewUser = async (data: Partial<Prisma.User>) => {
     body: JSON.stringify(data)
   });
 
-  console.log(res.body);
-
   if (res.ok) {
     return await res.json();
   } else {

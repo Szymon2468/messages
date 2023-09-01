@@ -21,9 +21,6 @@ export async function POST(
         where: { id: verificationToken?.userId },
         data: { passwordHash }
       });
-      console.log('haslo zmienione na', newPassword);
-    } else {
-      console.log('no cos nie dziala');
     }
 
     await prisma.verificationToken.deleteMany({

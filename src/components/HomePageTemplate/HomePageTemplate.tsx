@@ -1,13 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-import styles from './page.module.css';
-import { Fragment, SyntheticEvent } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { getAllUsers } from '@/fetches/getAllUsers';
-import getUUID from '@/utils/getUUID';
-import { sendInvitation } from '@/fetches/sendInvitation';
+import type Prisma from '@prisma/client';
+import SuggestedFriendTiles from '../SuggestedFriendTile/SuggestedFriendTile';
+import { GetResult } from '@prisma/client/runtime/library';
 
 const HomePageTemplate = ({ users }: any) => {
   const { status } = useSession();
@@ -29,18 +26,7 @@ const HomePageTemplate = ({ users }: any) => {
         <>
           <h2>Lista uzytkownikow</h2>
           <ul>
-            {users.map((user: any) => (
-              <Fragment key={getUUID()}>
-                <p>{user.name}</p>
-                <button
-                  onClick={async () => {
-                    await sendInvitation(user.id);
-                  }}
-                >
-                  Wyslij zaproszenie
-                </button>
-              </Fragment>
-            ))}
+            <SuggestedFriendTiles users={users} />
           </ul>
         </>
       )}

@@ -28,7 +28,6 @@ const ChangePasswordPage = () => {
       throw new Error('Haslo nowe nie moze byc takie samo jak stare');
     } else {
       await changePassword(data);
-      console.log('hasla poszly na backend');
     }
   };
 

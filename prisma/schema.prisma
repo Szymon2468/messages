@@ -7,6 +7,15 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
+enum RELATION_STATUS {
+  PENDING_FIRST_SECOND
+  PENDING_SECOND_FIRST
+  FRIENDS
+  BLOCK_FIRST_SECOND
+  BLOCK_SECOND_FIRST
+  BLOCK_BOTH
+}
+
 model User {
   id Int @id() @default(autoincrement())
   name String
@@ -17,8 +26,21 @@ model User {
   receivedMessages Message[] @relation("receiver") 
   verificationToken VerificationToken[]
   userSession userSession[]
-  receivedInvitations Invitation[] @relation("from")
-  sentInvitations Invitation[] @relation("to")
+  // receivedInvitations Invitation[] @relation("from")
+  // sentInvitations Invitation[] @relation("to")
+  userRelationsFirst UserRelationship[] @relation("first")
+  userRelationsSecond UserRelationship[] @relation("second")
+}
+
+model UserRelationship {
+  userFirstId Int
+  userFirst User @relation("first", fields: [userFirstId], references: [id])
+  userSecondId Int
+  userSecond User @relation("second", fields: [userSecondId], references: [id])
+  sentInvitationDate DateTime? @default(now())
+  relationStatus RELATION_STATUS 
+  @@unique([userFirstId, userSecondId]) 
+  @@id([userFirstId, userSecondId]) 
 }
 
 model Message {
@@ -32,14 +54,14 @@ model Message {
   createdDate DateTime @default(now())
 }
 
-model Invitation {
-  id Int @id @default(autoincrement())
-  userFromId Int
-  userFrom User @relation("from", fields: [userFromId], references: [id])
-  userToId Int
-  userTo User @relation("to", fields: [userToId], references: [id])
-  createdDate DateTime @default(now())
-}
+// model Invitation {
+//   id Int @id @default(autoincrement())
+//   userFromId Int
+//   userFrom User @relation("from", fields: [userFromId], references: [id])
+//   userToId Int
+//   userTo User @relation("to", fields: [userToId], references: [id])
+//   createdDate DateTime @default(now())
+// }
 
 model userSession {
   id Int @id @default(autoincrement())

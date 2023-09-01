@@ -19,13 +19,10 @@ export async function POST(req: NextRequest) {
     if (!ifUserExists) {
       const hashedPassword =
         passwordHash && (await bcrypt.hash(passwordHash, 10));
-      console.log('password', passwordHash);
 
       const newUser: any = await prisma.user.create({
         data: { ...data, passwordHash: hashedPassword }
       });
-
-      console.log(newUser);
 
       delete newUser.passwordHash;
 

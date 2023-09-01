@@ -19,7 +19,7 @@ export const sendMail = async (email: string, link: string) => {
     })
     .catch((error: Error) => {
       console.error(error);
-      console.log('zesralo sie');
+      console.log('zespsulo sie');
     });
 
   return message;

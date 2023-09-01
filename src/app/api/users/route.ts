@@ -12,12 +12,20 @@ export async function GET(req: NextRequest) {
     if (userId) {
       const users = await prisma.user.findMany({
         where: { NOT: { id: userId } },
-        select: { email: true, name: true },
+        select: {
+          email: true,
+          name: true,
+          id: true,
+          userRelationsSecond: true,
+          userRelationsFirst: true
+        },
         orderBy: { name: 'asc' }
       });
       if (!users) throw new Error('No Users Found');
 
       return NextResponse.json(users, { status: 200 });
+    } else {
+      throw new Error('No userId found');
     }
   } catch (err) {
     console.error(err);

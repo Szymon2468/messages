@@ -27,11 +27,8 @@ export default function LoginPage() {
     if (res?.error) {
       console.error(res.error);
     } else {
-      console.log('jestem');
       router.replace('/homepage');
     }
-
-    console.log(res);
   };
   return (
     <main>

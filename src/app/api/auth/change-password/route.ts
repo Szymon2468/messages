@@ -34,13 +34,6 @@ export async function PUT(req: NextRequest) {
             }
           });
 
-          console.log(
-            'haslo zmieniono poprawnie z ',
-            user?.passwordHash,
-            ' na ',
-            passwordHash
-          );
-
           return NextResponse.json({ status: 200 });
         }
       } catch (err) {
